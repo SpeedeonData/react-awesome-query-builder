@@ -38,7 +38,8 @@ export default class MultiSelectWidget extends PureComponent {
 
   componentDidMount() {
     if(this.props.value) {
-      this.props.setValue(this.props.value)
+      this.props.setValue(this.props.value);
+      this.handleYearsRange(this.props.value);
     }
   }
 
@@ -103,20 +104,29 @@ export default class MultiSelectWidget extends PureComponent {
     const dropdownWidth = this.optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT;
     const customSelectProps = omit(customProps, ["showCheckboxes"]);
 
-    const bday_range = "ameps__birthday_of_person_with_day_enhanced"; //yyyymmdd
-    const year_range = "ameps__dob_year";
+    const bday_range = "ameps__v-epsln-demog-000033"; //yyyymmdd
+    const year_range = "ameps__v-epsln-demog-000031";
+    const age_range = "ameps__v-epsln-demog-000030";
 
     // modal helpers
     const toggleModal = () => {
       this.setState({showModal: !this.state.showModal})
     }
 
-    if(field === year_range) {
+    // remove leading zeros before displaying
+    let currentRangeSelections = this.state.selectedYearRange.map(item => 
+      item
+        .split('|') // split each range by '|'
+        .map(value => value.startsWith('0') ? value.slice(1) : value) // remove leading '0' if present
+        .join('|') // join the values back together with '|'
+    );
+
+    if(field === year_range || field === age_range) {
       return (
         <>
           {!readonly && <button className="add-edit-range" onClick={toggleModal}>Add/Edit</button>}
           {
-            this.state.selectedYearRange.length ? (<span className="range-wrapper">{this.state.selectedYearRange.map((range) => {
+            currentRangeSelections.length ? (<span className="range-wrapper">{currentRangeSelections.map((range) => {
               return (
                 <span className="range-details" key={range}>{range}</span>
               );
@@ -126,7 +136,7 @@ export default class MultiSelectWidget extends PureComponent {
             show={this.state.showModal}
             toggle={toggleModal}
             addNew={this.handleYearsRange}
-            currentSelections={this.state.selectedYearRange}
+            currentSelections={currentRangeSelections}
           />}
         </>
       );
@@ -180,23 +190,12 @@ export default class MultiSelectWidget extends PureComponent {
 
 
 /**
- * Modal to select range of years
+ * Modal to select range of numbers
  */
-let currentDate = new Date();
-let currentYear = currentDate.getFullYear();
-let allYears = [];
-function populateYears() {
-  for (let i = (currentYear - 110); i <= (currentYear); i++) {
-    allYears.push(i);
-  }
-}
-populateYears();
-allYears.reverse();
 
 export function YearsSelector({toggle, addNew, show, currentSelections}) {
 
   const [selectedRanges, setSelectedRanges] = useState(currentSelections || []);
-  const [endYearList, setEndYearList] = useState(allYears);
   const [startYear, setStartYear] = useState();
   const [endYear, setEndYear] = useState();
   const [ready, setReady] = useState(false);
@@ -206,7 +205,9 @@ export function YearsSelector({toggle, addNew, show, currentSelections}) {
 
   const handleAddRange = () => {
     if (startYearRef.current.value && endYearRef.current.value) {
-      let newRange = `${startYearRef.current.value}|${endYearRef.current.value}`;
+      let start_value = startYearRef.current.value;
+      let end_value = endYearRef.current.value;
+      let newRange = `${start_value}|${end_value}`;
       if(!selectedRanges.includes(newRange)) {
         let updatedState = [...selectedRanges, newRange];
         setSelectedRanges(updatedState);
@@ -232,19 +233,7 @@ export function YearsSelector({toggle, addNew, show, currentSelections}) {
   }
 
   useEffect(() => {
-    if(startYear) {
-      const reducedList = allYears.filter(checkYears);
-      function checkYears(year) {
-        return parseInt(year) >= parseInt(startYear);
-      }
-      setEndYearList(reducedList); // only years after the starting year
-    } else {
-      setEndYearList(allYears); // all years
-    }
-  }, [startYear])
-
-  useEffect(() => {
-    if(startYear && endYear) {
+    if(startYear && endYear && (endYear >= startYear)) {
       setReady(true);
     } else {
       setReady(false);
@@ -253,34 +242,34 @@ export function YearsSelector({toggle, addNew, show, currentSelections}) {
 
   return (<>
       <Modal isOpen={show} className="modal-dialog-centered date-picker">
-        <ModalHeader>Year Person Was Born</ModalHeader>
+        <ModalHeader>Values Range</ModalHeader>
         <ModalBody>
           <div className='input-range custom-select'>
             <div className='ir-start'>
               <label>Start Value</label>
-              <select ref={startYearRef} onChange={handleUpdateStartYear}>
-                <option key={`default-start`} value={0}>Select a value</option>
-                {allYears.map((year) => {
-                  return <option key={`${year}-start`} value={year}>{year}</option>;
-                })}
-              </select>
+              <input 
+                type="text" 
+                ref={startYearRef} 
+                onChange={handleUpdateStartYear} 
+                placeholder="Enter a value"
+              />
             </div>
             <i className="bi bi-arrow-right"></i>
             <div className='ir-end'>
               <label>End Value</label>
-              <select ref={endYearRef} onChange={handleUpdateEndYear}>
-                <option key={`default-end`} value={0}>Select a value</option>
-                {endYearList.map((year) => {
-                  return <option key={`${year}-end`} value={year}>{year}</option>;
-                })}
-              </select>
+              <input 
+                type="text" 
+                ref={endYearRef} 
+                onChange={handleUpdateEndYear} 
+                placeholder="Enter a value"
+              />
             </div>
           </div>
           <hr />
           {selectedRanges &&
             <div className="year-editor-section">
               {selectedRanges.map((range) => {
-                return (<div className="year-range">
+                return (<div className="year-range" key={range + Math.random()}>
                   <span className="range">{range}</span>
                   <span className="delete-icon">
                     <i className="bi bi-trash" onClick={() => handleDeleteRange(range)}/>
@@ -437,7 +426,7 @@ export function BdaySelector({toggle, addNew, show, currentSelections}) {
         {selectedRanges &&
           <div className="year-editor-section">
             {selectedRanges.map((range) => {
-              return (<div className="year-range">
+              return (<div className="year-range" key={range + Math.random()}>
                 <span className="date-range">{formatDisplayDateRange(range)}</span>
                 <span className="delete-icon">
                   <i className="bi bi-trash" onClick={() => handleDeleteRange(range)}/>
