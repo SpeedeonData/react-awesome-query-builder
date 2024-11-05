@@ -96,6 +96,7 @@ export default class MultiSelectWidget extends PureComponent {
   };
 
   render() {
+    // Testing commit
     const {config, placeholder, allowCustomValues, customProps, value, readonly, field} = this.props;
     const {renderSize} = config.settings;
     const placeholderWidth = calcTextWidth(placeholder);
