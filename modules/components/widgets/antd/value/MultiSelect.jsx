@@ -40,6 +40,7 @@ export default class MultiSelectWidget extends PureComponent {
     if(this.props.value) {
       this.props.setValue(this.props.value);
       this.handleYearsRange(this.props.value);
+      this.handleChange(this.props.value);
     }
   }
 
