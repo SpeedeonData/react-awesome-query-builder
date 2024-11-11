@@ -182,7 +182,7 @@ export default class MultiSelectWidget extends PureComponent {
         onChange={this.handleChange}
         filterOption={this.filterOption}
         {...customSelectProps}
-      >{this.options}
+      >{this.options} Test 001
       </Select>
     );
   }
