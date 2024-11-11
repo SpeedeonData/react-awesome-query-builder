@@ -30,6 +30,7 @@ export default class MultiSelectWidget extends PureComponent {
     super(props);
     useOnPropsChanged(this);
     this.onPropsChanged(props);
+    this.getGeoValues = this.getGeoValues.bind(this);
     this.state = {
       showModal: false,
       selectedYearRange: this.props.value || [],
@@ -95,6 +96,16 @@ export default class MultiSelectWidget extends PureComponent {
     return dataForFilter.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   };
 
+  getGeoValues = () => {
+    // /v1/query/location/get-county-names-map
+    // config.settings.extras.context
+    config.settings.extras.context
+      .query("location/get-county-names-map", {})
+      .then((res) => {
+        console.log("res: ", res)
+      })
+  }
+
   render() {
     const {config, placeholder, allowCustomValues, customProps, value, readonly, field} = this.props;
     const {renderSize} = config.settings;
@@ -108,7 +119,8 @@ export default class MultiSelectWidget extends PureComponent {
     const year_range = "ameps__v-epsln-demog-000031";
     const age_range = "ameps__v-epsln-demog-000030";
 
-    console.log("Test 004 - this.props: ", this.props)
+    console.log("Test 005")
+    this.getGeoValues();
 
     // modal helpers
     const toggleModal = () => {
