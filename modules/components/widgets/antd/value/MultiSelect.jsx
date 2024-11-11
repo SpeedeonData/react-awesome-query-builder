@@ -108,7 +108,7 @@ export default class MultiSelectWidget extends PureComponent {
     const year_range = "ameps__v-epsln-demog-000031";
     const age_range = "ameps__v-epsln-demog-000030";
 
-    console.log("Test 002 - from npm package")
+    console.log("Test 003 - this.props.value: ", this.props.value)
 
     // modal helpers
     const toggleModal = () => {
