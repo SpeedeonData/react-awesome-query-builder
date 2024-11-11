@@ -99,8 +99,9 @@ export default class MultiSelectWidget extends PureComponent {
   getGeoValues = () => {
     // /v1/query/location/get-county-names-map
     // config.settings.extras.context
+    // .query("location/get-county-names-map", {})
     this.props.config.settings.extras.context
-      .query("location/get-county-names-map", {})
+      .query("admin/get_billing_code", { id: 558 })
       .then((res) => {
         console.log("res: ", res)
       })
@@ -119,7 +120,7 @@ export default class MultiSelectWidget extends PureComponent {
     const year_range = "ameps__v-epsln-demog-000031";
     const age_range = "ameps__v-epsln-demog-000030";
 
-    console.log("Test 006")
+    console.log("Test 007")
     this.getGeoValues();
 
     // modal helpers
