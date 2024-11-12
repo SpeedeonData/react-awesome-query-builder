@@ -48,7 +48,7 @@ export default (props) => {
     }
     const apiUrl = apiSearchEndpoints[type];
     const xhrConfig = { method: "POST", body: values };
-    const res = await config.settings.extras(apiUrl, xhrConfig, {});
+    const res = await config.settings.extras(apiUrl, {}, xhrConfig);
     const list = Object.entries(res).map((item) => { return { key: item[0], label: item[1] }; });
     
     // let labelVals = [];
