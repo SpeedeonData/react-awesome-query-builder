@@ -31,9 +31,9 @@ export default (props) => {
   });
 
   const apiSearchEndpoints = {
-    county: "location/get-county-names-map",
-    congressional: "location/get-cd-names-map",
-    cbsa: "location/get-cbsa-names-map"
+    __county: "location/get-county-names-map",
+    __congressional: "location/get-cd-names-map",
+    __cbsa: "location/get-cbsa-names-map"
   };
   // Get labels for geo-boundaries
   const getLabels = async (values) => {
