@@ -10,7 +10,6 @@ const Option = Select.Option;
 export default (props) => {
   const { config, placeholder, allowCustomValues, customProps, value, readonly, multiple, useAsyncSearch } = props;
 
-  // Test commit
   // hook
   const {
     open,
@@ -41,10 +40,16 @@ export default (props) => {
 
   const { defaultSelectWidth, defaultSearchWidth, renderSize } = config.settings;
   const placeholderWidth = calcTextWidth(placeholder);
-  const aValue = value && value.length ? value : undefined;
+  const aValue = value && value.length ? getLabels(value) : undefined;
   const width = aValue ? null : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const dropdownWidth = optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const minWidth = width || defaultSelectWidth;
+
+  // Get labels for geo-boundaries
+  const getLabels = (values) => {
+    console.log("values", values);
+    return values;
+  };
   
   const style = {
     width: (multiple ? undefined : minWidth),
