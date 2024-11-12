@@ -69,7 +69,7 @@ export default (props) => {
 
   const { defaultSelectWidth, defaultSearchWidth, renderSize } = config.settings;
   const placeholderWidth = calcTextWidth(placeholder);
-  const aValue = value && value.length ? getLabels(value) : undefined;
+  const aValue = value && value.length ? value : undefined;
   const width = aValue ? null : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const dropdownWidth = optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const minWidth = width || defaultSelectWidth;
@@ -159,7 +159,7 @@ export default (props) => {
       showSearch
       size={renderSize}
       loading={isLoading}
-      value={aValue}
+      value={getLabels(aValue)}
       //searchValue={inputValue}
       open={open}
       {...customProps}
