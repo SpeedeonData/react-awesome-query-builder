@@ -47,7 +47,8 @@ export default (props) => {
       }
     }
     const apiUrl = apiSearchEndpoints[type];
-    const res = await config.settings.extras(apiUrl, { query: JSON.stringify(values) });
+    const xhrConfig = { method: "POST", body: values };
+    const res = await config.settings.extras(apiUrl, xhrConfig, {});
     const list = Object.entries(res).map((item) => { return { key: item[0], label: item[1] }; });
     
     // let labelVals = [];
