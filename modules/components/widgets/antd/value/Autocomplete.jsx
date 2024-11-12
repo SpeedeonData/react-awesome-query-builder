@@ -47,7 +47,7 @@ export default (props) => {
       }
     }
     const apiUrl = apiSearchEndpoints[type];
-    const res = await props.config.settings.extras.command(apiUrl, { query: values });
+    const res = await config.settings.extras(apiUrl, { query: values });
     const list = Object.entries(res).map((item) => { return { key: item[0], label: item[1] }; });
     
     // let labelVals = [];
