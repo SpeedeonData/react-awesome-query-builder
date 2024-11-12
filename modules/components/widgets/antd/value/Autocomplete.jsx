@@ -47,6 +47,7 @@ export default (props) => {
 
   // Get labels for geo-boundaries
   const getLabels = (values) => {
+    if (!values) return;
     console.log("values", values);
     let labelVals = [];
     values.forEach((val, i) => {
