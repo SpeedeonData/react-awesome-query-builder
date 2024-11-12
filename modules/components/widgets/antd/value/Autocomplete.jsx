@@ -49,7 +49,6 @@ export default (props) => {
   const getLabels = (values) => {
     console.log("values", values);
     let labelVals = [];
-    if (!Array.isArray(values[0])) return values;
     values.forEach((val, i) => {
       labelVals.push({ label: `Thing ${i}`, key: val });
     });
