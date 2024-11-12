@@ -31,15 +31,15 @@ export default (props) => {
   });
 
   const apiSearchEndpoints = {
-    __county: "location/get-county-names-map",
-    __congressional: "location/get-cd-names-map",
-    __cbsa: "location/get-cbsa-names-map"
+    __county: "location/get-filtered-counties-map",
+    __congressional: "location/get-filtered-cd-map",
+    __cbsa: "location/get-filtered-cbsa-map"
   };
   // Get labels for geo-boundaries
   const getLabels = async (values) => {
     if (!values) return;
     let type;
-    const searchTerms = ["__county", "__congress", "__cbsa"];
+    const searchTerms = Object.keys(apiSearchEndpoints);
 
     for (const term of searchTerms) {
       if (props.field.includes(term)) {
@@ -47,9 +47,11 @@ export default (props) => {
       }
     }
     const apiUrl = apiSearchEndpoints[type];
-    const xhrConfig = { method: "POST" };
-    const res = await config.settings.extras(apiUrl, { query: values }, xhrConfig);
-    const list = Object.entries(res).map((item) => { return { key: item[0], label: item[1] }; });
+    const res = await config.settings.extras(apiUrl, { query: "" });
+    let list = [];
+    for (const value in values) {
+      list.push(Object.entries(res).find((item) => item.value === value ));
+    }
     
     // let labelVals = [];
     // values.forEach((val, i) => {
