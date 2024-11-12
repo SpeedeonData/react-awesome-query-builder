@@ -46,8 +46,14 @@ export default (props) => {
   const minWidth = width || defaultSelectWidth;
 
   // Get labels for geo-boundaries
-  const getLabels = (values) => ()  => {
+  const getLabels = (values) => {
     console.log("values", values);
+    let labelVals = [];
+    if (!Array.isArray(values[0])) return values;
+    values.forEach((val, i) => {
+      labelVals.push({ label: `Thing ${i}`, key: val });
+    });
+    values = labelVals;
     return values;
   };
   
