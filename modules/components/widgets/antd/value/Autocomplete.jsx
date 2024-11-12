@@ -30,6 +30,35 @@ export default (props) => {
     multiple
   });
 
+  const apiSearchEndpoints = {
+    county: "location/get-county-names-map",
+    congressional: "location/get-cd-names-map",
+    cbsa: "location/get-cbsa-names-map"
+  };
+  // Get labels for geo-boundaries
+  const getLabels = async (values) => {
+    if (!values) return;
+    let type;
+    const searchTerms = ["__county", "__congress", "__cbsa"];
+
+    for (const term of searchTerms) {
+      if (props.field.includes(term)) {
+        type = term;
+      }
+    }
+    const apiUrl = apiSearchEndpoints[type];
+    const res = await this.context.command(apiUrl, { query: values });
+    const list = Object.entries(res).map((item) => { return { key: item[0], label: item[1] }; });
+    
+    // let labelVals = [];
+    // values.forEach((val, i) => {
+    //   labelVals.push({ label: `Thing ${i}`, key: val });
+    // });
+
+    values = list;
+    return values;
+  };
+
   const filteredOptions = extendOptions(options);
 
   const optionsMaxWidth = useMemo(() => {
@@ -40,22 +69,10 @@ export default (props) => {
 
   const { defaultSelectWidth, defaultSearchWidth, renderSize } = config.settings;
   const placeholderWidth = calcTextWidth(placeholder);
-  const aValue = value && value.length ? value : undefined;
+  const aValue = value && value.length ? getLabels(value) : undefined;
   const width = aValue ? null : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const dropdownWidth = optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const minWidth = width || defaultSelectWidth;
-
-  // Get labels for geo-boundaries
-  const getLabels = (values) => {
-    if (!values) return;
-    console.log("values", values);
-    let labelVals = [];
-    values.forEach((val, i) => {
-      labelVals.push({ label: `Thing ${i}`, key: val });
-    });
-    values = labelVals;
-    return values;
-  };
   
   const style = {
     width: (multiple ? undefined : minWidth),
@@ -142,7 +159,7 @@ export default (props) => {
       showSearch
       size={renderSize}
       loading={isLoading}
-      value={getLabels(aValue)}
+      value={aValue}
       //searchValue={inputValue}
       open={open}
       {...customProps}
