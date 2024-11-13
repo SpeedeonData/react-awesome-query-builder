@@ -83,7 +83,7 @@ export default (props) => {
       }
     }
     const apiUrl = apiSearchEndpoints[type];
-    const res = await config.settings.extras(apiUrl, { values });
+    const res = await config.settings.extras(apiUrl, values);
     let list = [];
     for (const value in values) {
       list.push(Object.entries(res).find((item) => item.value === value ));
