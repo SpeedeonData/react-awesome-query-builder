@@ -63,13 +63,13 @@ export default (props) => {
   //   return values;
   // };
   
-  // const style = {
-  //   width: (multiple ? undefined : minWidth),
-  //   minWidth: minWidth
-  // };
-  // const dropdownStyle = {
-  //   width: dropdownWidth,
-  // };
+  const style = {
+    width: (multiple ? undefined : minWidth),
+    minWidth: minWidth
+  };
+  const dropdownStyle = {
+    width: dropdownWidth,
+  };
 
   // Get labels for geo-boundaries
   const getLabels = async (values) => {
