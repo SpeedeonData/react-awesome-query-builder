@@ -31,9 +31,9 @@ export default (props) => {
   });
 
   const apiSearchEndpoints = {
-    __county: "location/get-filtered-counties-map",
-    __congressional: "location/get-filtered-cd-map",
-    __cbsa: "location/get-filtered-cbsa-map"
+    __county: "location/get-county-names-map",
+    __congressional: "location/get-cd-names-map",
+    __cbsa: "location/location/get-cbsa-names-map"
   };
 
   const filteredOptions = extendOptions(options);
