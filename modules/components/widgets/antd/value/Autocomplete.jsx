@@ -37,7 +37,7 @@ export default (props) => {
   };
   // Get labels for geo-boundaries
   const getLabels = async (values) => {
-    if (!values) return;
+    if (!values.length) return;
     let type;
     const searchTerms = Object.keys(apiSearchEndpoints);
 
