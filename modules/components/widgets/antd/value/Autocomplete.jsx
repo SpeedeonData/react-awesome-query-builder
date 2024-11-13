@@ -30,38 +30,6 @@ export default (props) => {
     multiple
   });
 
-  const apiSearchEndpoints = {
-    __county: "location/get-filtered-counties-map",
-    __congressional: "location/get-filtered-cd-map",
-    __cbsa: "location/get-filtered-cbsa-map"
-  };
-  // Get labels for geo-boundaries
-  const getLabels = async (values) => {
-    if (!values || !values.length) return;
-    let type;
-    const searchTerms = Object.keys(apiSearchEndpoints);
-
-    for (const term of searchTerms) {
-      if (props.field.includes(term)) {
-        type = term;
-      }
-    }
-    const apiUrl = apiSearchEndpoints[type];
-    const res = await config.settings.extras(apiUrl, { query: "" });
-    let list = [];
-    for (const value in values) {
-      list.push(Object.entries(res).find((item) => item.value === value ));
-    }
-    
-    // let labelVals = [];
-    // values.forEach((val, i) => {
-    //   labelVals.push({ label: `Thing ${i}`, key: val });
-    // });
-
-    values = list;
-    return values;
-  };
-
   const filteredOptions = extendOptions(options);
 
   const optionsMaxWidth = useMemo(() => {
@@ -76,6 +44,18 @@ export default (props) => {
   const width = aValue ? null : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const dropdownWidth = optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const minWidth = width || defaultSelectWidth;
+
+  // Get labels for geo-boundaries
+  const getLabels = (values) => {
+    if (!values) return;
+    console.log("values", values);
+    let labelVals = [];
+    values.forEach((val, i) => {
+      labelVals.push({ label: `Thing ${i}`, key: val });
+    });
+    values = labelVals;
+    return values;
+  };
   
   const style = {
     width: (multiple ? undefined : minWidth),
