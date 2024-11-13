@@ -29,28 +29,27 @@ export default (props) => {
     debounceTimeout: 100,
     multiple
   });
-
-  const apiSearchEndpoints = {
-    __county: "location/get-county-names-map",
-    __congressional: "location/get-cd-names-map",
-    __cbsa: "location/location/get-cbsa-names-map"
-  };
-
+  
   const filteredOptions = extendOptions(options);
-
+  
   const optionsMaxWidth = useMemo(() => {
     return filteredOptions.reduce((max, option) => {
       return Math.max(max, calcTextWidth(option.title, null));
     }, 0);
   }, [options]);
-
+  
   const { defaultSelectWidth, defaultSearchWidth, renderSize } = config.settings;
   const placeholderWidth = calcTextWidth(placeholder);
   const aValue = value && value.length ? value : undefined;
   const width = aValue ? null : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const dropdownWidth = optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const minWidth = width || defaultSelectWidth;
-
+  
+  const apiSearchEndpoints = {
+    __county: "location/get-county-names-map",
+    __congressional: "location/get-cd-names-map",
+    __cbsa: "location/location/get-cbsa-names-map"
+  };
   // // Get labels for geo-boundaries
   // const getLabels = (values) => {
   //   if (!values) return;
@@ -84,16 +83,12 @@ export default (props) => {
     }
     const apiUrl = apiSearchEndpoints[type];
     const res = await config.settings.extras(apiUrl, values);
-    let list = [];
-    for (const value in values) {
-      list.push(Object.entries(res).find((item) => item.value === value ));
-    }
+    let list = res;
     
     // let labelVals = [];
     // values.forEach((val, i) => {
     //   labelVals.push({ label: `Thing ${i}`, key: val });
     // });
-
     values = list;
     return values;
   };
