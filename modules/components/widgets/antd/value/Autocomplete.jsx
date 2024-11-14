@@ -66,8 +66,7 @@ export default (props) => {
 
   useEffect(() => { 
     if (!aValue) return;
-    const labVals = await getLabels(aValue);
-    setLabelValues(labVals);
+    getLabels(aValue).then((vals) => setLabelValues(vals));
   }, []);
   
   const style = {
