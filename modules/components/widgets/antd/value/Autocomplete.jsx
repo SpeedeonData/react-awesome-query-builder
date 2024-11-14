@@ -67,7 +67,7 @@ export default (props) => {
   useEffect(() => { 
     // if (!aValue) return;
     getLabels(aValue).then((vals) => setLabelValues(vals));
-  }, []);
+  }, [aValue]);
   
   const style = {
     width: (multiple ? undefined : minWidth),
