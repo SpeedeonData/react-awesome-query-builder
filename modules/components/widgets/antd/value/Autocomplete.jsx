@@ -90,12 +90,10 @@ export default (props) => {
     }
     const apiUrl = apiSearchEndpoints[type];
     const res = await config.settings.extras(apiUrl, values);
-    let list = res;
+    let list = Object.entries(res).map((item) => {
+      return { key: item[0], label: item[1] };
+    });
     
-    // let labelVals = [];
-    // values.forEach((val, i) => {
-    //   labelVals.push({ label: `Thing ${i}`, key: val });
-    // });
     values = list;
     return values;
   };
