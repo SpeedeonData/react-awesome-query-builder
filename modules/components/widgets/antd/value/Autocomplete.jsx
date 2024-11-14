@@ -89,6 +89,7 @@ export default (props) => {
       }
     }
     const apiUrl = apiSearchEndpoints[type];
+    if (!type) return values;
     const res = await config.settings.extras(apiUrl, values);
     let list = Object.entries(res).map((item) => {
       return { key: item[0], label: item[1] };
