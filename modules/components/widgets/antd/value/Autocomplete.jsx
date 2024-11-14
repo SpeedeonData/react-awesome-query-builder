@@ -72,7 +72,7 @@ export default (props) => {
 
   // Get labels for geo-boundaries
   const getLabels = async (values) => {
-    if (!values) return;
+    if (!values) return values;
     let type;
     const searchTerms = Object.keys(apiSearchEndpoints);
 
@@ -171,7 +171,7 @@ export default (props) => {
       showSearch
       size={renderSize}
       loading={isLoading}
-      value={getLabels(aValue)}
+      value={getLabels(aValue) || undefined}
       //searchValue={inputValue}
       open={open}
       {...customProps}
