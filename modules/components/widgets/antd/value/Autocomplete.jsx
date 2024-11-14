@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Select, Spin, Divider } from "antd";
 import { calcTextWidth, SELECT_WIDTH_OFFSET_RIGHT } from "../../../../utils/domUtils";
 import { mapListValues } from "../../../../utils/stuff";
@@ -9,6 +9,8 @@ const Option = Select.Option;
 
 export default (props) => {
   const { config, placeholder, allowCustomValues, customProps, value, readonly, multiple, useAsyncSearch } = props;
+
+  const [labelValues, setLabelValues] = useState([]);
 
   // hook
   const {
@@ -44,7 +46,7 @@ export default (props) => {
   const width = aValue ? null : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const dropdownWidth = optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const minWidth = width || defaultSelectWidth;
-  
+
   const apiSearchEndpoints = {
     __county: "location/get-county-names-map",
     __congressional: "location/get-cd-names-map",
@@ -61,6 +63,12 @@ export default (props) => {
   //   values = labelVals;
   //   return values;
   // };
+
+  useEffect(() => { 
+    if (!aValue) return;
+    const labVals = await getLabels(aValue);
+    setLabelValues(labVals);
+  }, []);
   
   const style = {
     width: (multiple ? undefined : minWidth),
@@ -171,7 +179,7 @@ export default (props) => {
       showSearch
       size={renderSize}
       loading={isLoading}
-      value={getLabels(aValue) || undefined}
+      value={labelValues}
       //searchValue={inputValue}
       open={open}
       {...customProps}
