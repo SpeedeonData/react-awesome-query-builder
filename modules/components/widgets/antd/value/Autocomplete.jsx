@@ -65,7 +65,7 @@ export default (props) => {
   // };
 
   useEffect(() => { 
-    if (!aValue) return;
+    // if (!aValue) return;
     getLabels(aValue).then((vals) => setLabelValues(vals));
   }, []);
   
