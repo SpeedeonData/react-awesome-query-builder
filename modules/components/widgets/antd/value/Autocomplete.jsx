@@ -55,7 +55,7 @@ export default (props) => {
 
   useEffect(() => { 
     allowCustomValues = false;
-  }, []);
+  }, [labelValues]);
 
   useEffect(() => { 
     // if (!aValue) return;
