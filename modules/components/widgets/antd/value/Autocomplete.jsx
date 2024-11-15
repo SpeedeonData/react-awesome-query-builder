@@ -54,10 +54,6 @@ export default (props) => {
   };
 
   useEffect(() => { 
-    allowCustomValues = false;
-  }, [labelValues]);
-
-  useEffect(() => { 
     // if (!aValue) return;
     getLabels(aValue).then((vals) => setLabelValues(vals));
   }, [aValue]);
