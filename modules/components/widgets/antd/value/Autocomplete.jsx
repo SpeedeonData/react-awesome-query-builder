@@ -8,7 +8,7 @@ import useListValuesAutocomplete from "../../../../hooks/useListValuesAutocomple
 const Option = Select.Option;
 
 export default (props) => {
-  const { config, placeholder, allowCustomValues, customProps, value, readonly, multiple, useAsyncSearch } = props;
+  let { config, placeholder, allowCustomValues, customProps, value, readonly, multiple, useAsyncSearch } = props;
 
   const [labelValues, setLabelValues] = useState([]);
 
@@ -52,6 +52,11 @@ export default (props) => {
     __congress: "location/get-cd-names-map",
     __cbsa: "location/get-cbsa-names-map"
   };
+
+  useEffect(() => { 
+    setTimeout(() => { allowCustomValues = false; }, 220);
+  }, []);
+
 
   useEffect(() => { 
     // if (!aValue) return;
