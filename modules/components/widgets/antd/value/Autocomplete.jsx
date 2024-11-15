@@ -52,17 +52,10 @@ export default (props) => {
     __congress: "location/get-cd-names-map",
     __cbsa: "location/get-cbsa-names-map"
   };
-  // // Get labels for geo-boundaries
-  // const getLabels = (values) => {
-  //   if (!values) return;
-  //   console.log("values", values);
-  //   let labelVals = [];
-  //   values.forEach((val, i) => {
-  //     labelVals.push({ label: `Thing ${i}`, key: val });
-  //   });
-  //   values = labelVals;
-  //   return values;
-  // };
+
+  useEffect(() => { 
+    allowCustomValues = false;
+  }, []);
 
   useEffect(() => { 
     // if (!aValue) return;
