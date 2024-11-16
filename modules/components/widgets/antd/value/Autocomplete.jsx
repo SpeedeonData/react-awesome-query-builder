@@ -11,6 +11,7 @@ export default (props) => {
   let { config, placeholder, allowCustomValues, customProps, value, readonly, multiple, useAsyncSearch } = props;
 
   const [labelValues, setLabelValues] = useState([]);
+  const [isLoaded, setIsloaded] = useState(false);
 
   // hook
   const {
@@ -53,14 +54,15 @@ export default (props) => {
     __cbsa: "location/get-cbsa-names-map"
   };
 
-  useEffect(() => { 
-    setTimeout(() => { allowCustomValues = false; }, 220);
-  }, []);
+  // useEffect(() => { 
+  //   setTimeout(() => { allowCustomValues = false; }, 220);
+  // }, []);
 
 
   useEffect(() => { 
     // if (!aValue) return;
     getLabels(aValue).then((vals) => setLabelValues(vals));
+    allowCustomValues = false;
   }, [aValue]);
   
   const style = {
