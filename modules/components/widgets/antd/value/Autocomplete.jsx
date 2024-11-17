@@ -62,11 +62,6 @@ export default (props) => {
     // if (!aValue) return;
     getLabels(aValue).then((vals) => {
       setLabelValues(vals);
-      if (!asyncListValues) {
-        let asyncVals = vals.forEach((val) => { 
-          return {key: val.key, value: val.key, children: val.label };
-        });
-      }
     });
   }, [aValue]);
   
