@@ -8,10 +8,9 @@ import useListValuesAutocomplete from "../../../../hooks/useListValuesAutocomple
 const Option = Select.Option;
 
 export default (props) => {
-  let { config, placeholder, allowCustomValues, customProps, value, readonly, multiple, useAsyncSearch } = props;
+  let { config, placeholder, allowCustomValues, customProps, value, readonly, multiple, useAsyncSearch, asyncListValues } = props;
 
   const [labelValues, setLabelValues] = useState([]);
-  const [isLoaded, setIsloaded] = useState(false);
 
   // hook
   const {
@@ -61,8 +60,14 @@ export default (props) => {
 
   useEffect(() => { 
     // if (!aValue) return;
-    getLabels(aValue).then((vals) => setLabelValues(vals));
-    allowCustomValues = false;
+    getLabels(aValue).then((vals) => {
+      setLabelValues(vals);
+      if (!asyncListValues) {
+        let asyncVals = vals.forEach((val) => { 
+          return {key: val.key, value: val.key, children: val.label };
+        });
+      }
+    });
   }, [aValue]);
   
   const style = {
