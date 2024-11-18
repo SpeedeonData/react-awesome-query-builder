@@ -169,7 +169,7 @@ export default (props) => {
       onChange={aOnChange}
       onSelect={aOnSelect}
       onSearch={onSearch}
-      showArrow
+      // showArrow
       showSearch
       size={renderSize}
       loading={isLoading}
