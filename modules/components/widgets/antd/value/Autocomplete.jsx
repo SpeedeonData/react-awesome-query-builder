@@ -53,13 +53,7 @@ export default (props) => {
     __cbsa: "location/get-cbsa-names-map"
   };
 
-  // useEffect(() => { 
-  //   setTimeout(() => { allowCustomValues = false; }, 220);
-  // }, []);
-
-
   useEffect(() => { 
-    // if (!aValue) return;
     getLabels(aValue).then((vals) => {
       setLabelValues(vals);
     });
@@ -169,12 +163,10 @@ export default (props) => {
       onChange={aOnChange}
       onSelect={aOnSelect}
       onSearch={onSearch}
-      // showArrow
       showSearch
       size={renderSize}
       loading={isLoading}
       value={labelValues}
-      // searchValue={inputValue}
       open={open}
       {...customProps}
     >
