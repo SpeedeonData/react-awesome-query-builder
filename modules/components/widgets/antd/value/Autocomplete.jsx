@@ -174,7 +174,7 @@ export default (props) => {
       size={renderSize}
       loading={isLoading}
       value={labelValues}
-      //searchValue={inputValue}
+      searchValue={inputValue}
       open={open}
       {...customProps}
     >
