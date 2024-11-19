@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Select, Spin, Divider } from "antd";
 import { calcTextWidth, SELECT_WIDTH_OFFSET_RIGHT } from "../../../../utils/domUtils";
 import { mapListValues } from "../../../../utils/stuff";
@@ -8,8 +8,9 @@ import useListValuesAutocomplete from "../../../../hooks/useListValuesAutocomple
 const Option = Select.Option;
 
 export default (props) => {
-  const { config, placeholder, allowCustomValues, customProps, value, readonly, multiple, useAsyncSearch } = props;
+  let { config, placeholder, allowCustomValues, customProps, value, readonly, multiple, useAsyncSearch, asyncListValues } = props;
 
+  const [labelValues, setLabelValues] = useState([]);
 
   // hook
   const {
@@ -30,21 +31,33 @@ export default (props) => {
     debounceTimeout: 100,
     multiple
   });
-
+  
   const filteredOptions = extendOptions(options);
-
+  
   const optionsMaxWidth = useMemo(() => {
     return filteredOptions.reduce((max, option) => {
       return Math.max(max, calcTextWidth(option.title, null));
     }, 0);
   }, [options]);
-
+  
   const { defaultSelectWidth, defaultSearchWidth, renderSize } = config.settings;
   const placeholderWidth = calcTextWidth(placeholder);
   const aValue = value && value.length ? value : undefined;
   const width = aValue ? null : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const dropdownWidth = optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT;
   const minWidth = width || defaultSelectWidth;
+
+  const apiSearchEndpoints = {
+    __county: "location/get-county-names-map",
+    __congress: "location/get-cd-names-map",
+    __cbsa: "location/get-cbsa-names-map"
+  };
+
+  useEffect(() => { 
+    getLabels(aValue).then((vals) => {
+      setLabelValues(vals);
+    });
+  }, [aValue]);
   
   const style = {
     width: (multiple ? undefined : minWidth),
@@ -53,6 +66,29 @@ export default (props) => {
   const dropdownStyle = {
     width: dropdownWidth,
   };
+
+  // Get labels for geo-boundaries
+  const getLabels = async (values) => {
+    if (!values) return values;
+    let type;
+    const searchTerms = Object.keys(apiSearchEndpoints);
+
+    for (const term of searchTerms) {
+      if (props.field.includes(term)) {
+        type = term;
+      }
+    }
+    const apiUrl = apiSearchEndpoints[type];
+    if (!type) return values;
+    const res = await config.settings.extras(apiUrl, values);
+    let list = Object.entries(res).map((item) => {
+      return { key: item[0], label: item[1] };
+    });
+    
+    values = list;
+    return values;
+  };
+
 
   const mode = !multiple ? undefined : (allowCustomValues ? "tags" : "multiple");
   const dynamicPlaceholder = !readonly ? aPlaceholder : "";
@@ -114,7 +150,7 @@ export default (props) => {
     <Select
       filterOption={useAsyncSearch ? false : true}
       dropdownRender={dropdownRender}
-      allowClear={true}
+      allowClear={false}
       notFoundContent={isLoading ? "Loading..." : null}
       disabled={readonly}
       mode={mode}
@@ -127,12 +163,10 @@ export default (props) => {
       onChange={aOnChange}
       onSelect={aOnSelect}
       onSearch={onSearch}
-      showArrow
       showSearch
       size={renderSize}
       loading={isLoading}
-      value={aValue}
-      //searchValue={inputValue}
+      value={labelValues}
       open={open}
       {...customProps}
     >

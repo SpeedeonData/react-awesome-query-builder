@@ -5,9 +5,9 @@ import {calcTextWidth, SELECT_WIDTH_OFFSET_RIGHT} from "../../../../utils/domUti
 import {mapListValues} from "../../../../utils/stuff";
 import {useOnPropsChanged} from "../../../../utils/reactUtils";
 import omit from "lodash/omit";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert, Input } from 'reactstrap';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert, Input } from "reactstrap";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Option = Select.Option;
 
@@ -33,13 +33,14 @@ export default class MultiSelectWidget extends PureComponent {
     this.state = {
       showModal: false,
       selectedYearRange: this.props.value || [],
-    }
+    };
   }
 
   componentDidMount() {
     if(this.props.value) {
       this.props.setValue(this.props.value);
       this.handleYearsRange(this.props.value);
+      this.handleChange(this.props.value);
     }
   }
 
@@ -59,7 +60,7 @@ export default class MultiSelectWidget extends PureComponent {
 
   handleChange = (val) => {
     if (val && !val.length) {
-      val = undefined //not allow []
+      val = undefined; //not allow []
     }
     //Split on separators, space or comma, if allow custom values
     let newValues=[];
@@ -88,7 +89,7 @@ export default class MultiSelectWidget extends PureComponent {
     }, () => {
       this.props.setValue(this.state.selectedYearRange);
     });
-  }
+  };
 
   filterOption = (input, option) => {
     const dataForFilter = option.children || option.value;
@@ -110,15 +111,15 @@ export default class MultiSelectWidget extends PureComponent {
 
     // modal helpers
     const toggleModal = () => {
-      this.setState({showModal: !this.state.showModal})
-    }
+      this.setState({showModal: !this.state.showModal});
+    };
 
     // remove leading zeros before displaying
     let currentRangeSelections = this.state.selectedYearRange.map(item => 
       item
-        .split('|') // split each range by '|'
-        .map(value => value.startsWith('0') ? value.slice(1) : value) // remove leading '0' if present
-        .join('|') // join the values back together with '|'
+        .split("|") // split each range by '|'
+        .map(value => value.startsWith("0") ? value.slice(1) : value) // remove leading '0' if present
+        .join("|") // join the values back together with '|'
     );
 
     if(field === year_range || field === age_range) {
@@ -215,22 +216,22 @@ export function YearsSelector({toggle, addNew, show, currentSelections}) {
       }
       toggle();
     }
-  }
+  };
 
   const handleUpdateStartYear = () => {
     setStartYear(startYearRef.current.value);
-  }
+  };
 
   const handleUpdateEndYear = () => {
     setEndYear(endYearRef.current.value);
-  }
+  };
 
   const handleDeleteRange = (el) => {
     let indexToRemove = selectedRanges.indexOf(el);
     let updatedArray = selectedRanges.filter((_,index) => index !== indexToRemove );
     setSelectedRanges(updatedArray);
     addNew(updatedArray);
-  }
+  };
 
   useEffect(() => {
     if(startYear && endYear && (endYear >= startYear)) {
@@ -238,59 +239,59 @@ export function YearsSelector({toggle, addNew, show, currentSelections}) {
     } else {
       setReady(false);
     }
-  }, [startYear, endYear])
+  }, [startYear, endYear]);
 
   return (<>
-      <Modal isOpen={show} className="modal-dialog-centered date-picker">
-        <ModalHeader>Values Range</ModalHeader>
-        <ModalBody>
-          <div className='input-range custom-select'>
-            <div className='ir-start'>
-              <label>Start Value</label>
-              <input 
-                type="text" 
-                ref={startYearRef} 
-                onChange={handleUpdateStartYear} 
-                placeholder="Enter a value"
-              />
-            </div>
-            <i className="bi bi-arrow-right"></i>
-            <div className='ir-end'>
-              <label>End Value</label>
-              <input 
-                type="text" 
-                ref={endYearRef} 
-                onChange={handleUpdateEndYear} 
-                placeholder="Enter a value"
-              />
-            </div>
+    <Modal isOpen={show} className="modal-dialog-centered date-picker">
+      <ModalHeader>Values Range</ModalHeader>
+      <ModalBody>
+        <div className='input-range custom-select'>
+          <div className='ir-start'>
+            <label>Start Value</label>
+            <input 
+              type="text" 
+              ref={startYearRef} 
+              onChange={handleUpdateStartYear} 
+              placeholder="Enter a value"
+            />
           </div>
-          <hr />
-          {selectedRanges &&
-            <div className="year-editor-section">
+          <i className="bi bi-arrow-right"></i>
+          <div className='ir-end'>
+            <label>End Value</label>
+            <input 
+              type="text" 
+              ref={endYearRef} 
+              onChange={handleUpdateEndYear} 
+              placeholder="Enter a value"
+            />
+          </div>
+        </div>
+        <hr />
+        {selectedRanges
+            && <div className="year-editor-section">
               {selectedRanges.map((range) => {
                 return (<div className="year-range" key={range + Math.random()}>
                   <span className="range">{range}</span>
                   <span className="delete-icon">
                     <i className="bi bi-trash" onClick={() => handleDeleteRange(range)}/>
                   </span>
-                </div>)
+                </div>);
               })}
             </div>
-          }
+        }
           
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" size="sm" onClick={toggle}>Close</Button>
-          <Button color="primary" className="promote" size="sm" 
-            onClick={handleAddRange}
-            disabled={!ready}
-          >
+      </ModalBody>
+      <ModalFooter>
+        <Button color="secondary" size="sm" onClick={toggle}>Close</Button>
+        <Button color="primary" className="promote" size="sm" 
+          onClick={handleAddRange}
+          disabled={!ready}
+        >
               Add Selection
-          </Button>{' '}
-        </ModalFooter>
-      </Modal>
-  </>)
+        </Button>{" "}
+      </ModalFooter>
+    </Modal>
+  </>);
 }
 
 
@@ -305,11 +306,11 @@ function subtractYears(date, years) {
 // format YYYYMMDD into MM/DD/YYYY-MM/DD/YYYY for display
 const formatDisplayDateRange = (date) => {
   if (!date) return;
-  let dates = date.split('-');
+  let dates = date.split("-");
   let startDate = formatDisplayDate(dates[0]);
   let endDate = formatDisplayDate(dates[1]) || startDate;
-  return startDate + ' - ' + endDate;
-}
+  return startDate + " - " + endDate;
+};
 
 // format YYYYMMDD into MM/DD/YYYY for display
 const formatDisplayDate = (date) => {
@@ -318,8 +319,8 @@ const formatDisplayDate = (date) => {
   const month = date.substring(4, 6);
   const day = date.substring(6, date.length);
 
-  return month + '/' + day + '/' + year;
-}
+  return month + "/" + day + "/" + year;
+};
 
 export function BdaySelector({toggle, addNew, show, currentSelections}) {
   const [selectedRanges, setSelectedRanges] = useState(currentSelections || []);
@@ -336,26 +337,26 @@ export function BdaySelector({toggle, addNew, show, currentSelections}) {
     }
     setStartDate(val);
     setMinEndDate(val);
-  }
+  };
 
   const handleEndChange = (val) => {
     setEndDate(val);
-  }
+  };
 
   // format date into YYYYMMDD for backend
   const formatDate = (date) => {
     var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
     if (month.length < 2) 
-        month = '0' + month;
+      month = "0" + month;
     if (day.length < 2) 
-        day = '0' + day;
+      day = "0" + day;
 
-    return [year, month, day].join('');
-  }
+    return [year, month, day].join("");
+  };
 
   const handleAddRange = () => {
     if (startDate && endDate) {
@@ -367,14 +368,14 @@ export function BdaySelector({toggle, addNew, show, currentSelections}) {
       }
       toggle();
     }
-  }
+  };
 
   const handleDeleteRange = (el) => {
     let indexToRemove = selectedRanges.indexOf(el);
     let updatedArray = selectedRanges.filter((_,index) => index !== indexToRemove );
     setSelectedRanges(updatedArray);
     addNew(updatedArray);
-  }
+  };
 
   useEffect(() => {
     if(startDate && endDate) {
@@ -382,7 +383,7 @@ export function BdaySelector({toggle, addNew, show, currentSelections}) {
     } else {
       setReady(false);
     }
-  }, [startDate, endDate])
+  }, [startDate, endDate]);
 
   return (<>
     <Modal isOpen={show} className="modal-dialog-centered date-picker">
@@ -400,7 +401,7 @@ export function BdaySelector({toggle, addNew, show, currentSelections}) {
               dropdownMode="select"
               minDate={minDate}
               maxDate={subtractYears(new Date(), 18)}
-              >
+            >
             </DatePicker>
           </div>
           <div className='dp-end'>
@@ -423,15 +424,15 @@ export function BdaySelector({toggle, addNew, show, currentSelections}) {
           To ensure the targets are adults, the latest date that can be entered is 18 years prior to today's date.
         </p>
         <hr />
-        {selectedRanges &&
-          <div className="year-editor-section">
+        {selectedRanges
+          && <div className="year-editor-section">
             {selectedRanges.map((range) => {
               return (<div className="year-range" key={range + Math.random()}>
                 <span className="date-range">{formatDisplayDateRange(range)}</span>
                 <span className="delete-icon">
                   <i className="bi bi-trash" onClick={() => handleDeleteRange(range)}/>
                 </span>
-              </div>)
+              </div>);
             })}
           </div>
         }
@@ -444,8 +445,8 @@ export function BdaySelector({toggle, addNew, show, currentSelections}) {
           disabled={!ready}
         >
             Add Selection
-        </Button>{' '}
+        </Button>{" "}
       </ModalFooter>
     </Modal>
-</>)
+  </>);
 }
