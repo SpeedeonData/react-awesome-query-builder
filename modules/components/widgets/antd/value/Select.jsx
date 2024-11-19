@@ -19,7 +19,6 @@ export default class SelectWidget extends PureComponent {
     // from fieldSettings:
     listValues: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   };
-  // Test Commit
   constructor(props) {
     super(props);
     useOnPropsChanged(this);
