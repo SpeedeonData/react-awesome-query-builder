@@ -150,7 +150,7 @@ export default (props) => {
     <Select
       filterOption={useAsyncSearch ? false : true}
       dropdownRender={dropdownRender}
-      allowClear={true}
+      allowClear={false}
       notFoundContent={isLoading ? "Loading..." : null}
       disabled={readonly}
       mode={mode}
