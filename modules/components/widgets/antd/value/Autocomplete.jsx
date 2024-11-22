@@ -48,9 +48,9 @@ export default (props) => {
   const minWidth = width || defaultSelectWidth;
 
   const apiSearchEndpoints = {
-    __county: "location/get-county-names-map",
-    __congress: "location/get-cd-names-map",
-    __cbsa: "location/get-cbsa-names-map"
+    _county: "location/get-county-names-map",
+    _congress: "location/get-cd-names-map",
+    _cbsa: "location/get-cbsa-names-map"
   };
 
   useEffect(() => { 
