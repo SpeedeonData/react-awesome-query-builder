@@ -84,6 +84,7 @@ export default class MultiSelectWidget extends PureComponent {
   };
 
   handleYearsRange = (val) => {
+    console.log(val);
     this.setState(() => {
       return { selectedYearRange: val };
     }, () => {
@@ -115,6 +116,7 @@ export default class MultiSelectWidget extends PureComponent {
     };
 
     // remove leading zeros before displaying
+    console.log("props", this.state);
     let currentRangeSelections = this.state.selectedYearRange.map(item => 
       item
         .split("|") // split each range by '|'
