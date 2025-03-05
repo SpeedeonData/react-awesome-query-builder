@@ -32,6 +32,17 @@ export default (props) => {
     multiple
   });
   
+  // This adds labels instead of just IDs to the dropdown.
+  if (asyncListValues?.length) {
+    asyncListValues.forEach(option => {
+      options.find(entry => {
+        if (entry.value === option.value) {
+          entry.title = option.children;
+        }
+      });
+    });
+  }
+
   const filteredOptions = extendOptions(options);
   
   const optionsMaxWidth = useMemo(() => {
