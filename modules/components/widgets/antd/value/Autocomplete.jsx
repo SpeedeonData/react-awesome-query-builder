@@ -32,8 +32,8 @@ export default (props) => {
     multiple
   });
   
-  let filteredOptions;
-  if (asyncListValues.length) {
+  let filteredOptions = [];
+  if (asyncListValues?.length) {
     asyncListValues.map(option => {
       filteredOptions.push({ title: option.children, value: option.value });
     });
