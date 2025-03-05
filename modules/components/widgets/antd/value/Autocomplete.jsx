@@ -32,7 +32,14 @@ export default (props) => {
     multiple
   });
   
-  const filteredOptions = extendOptions(options);
+  let filteredOptions;
+  if (asyncListValues.length) {
+    asyncListValues.map(option => {
+      filteredOptions.push({ title: option.children, value: option.value });
+    });
+  } else {
+    filteredOptions = extendOptions(options);
+  }
   
   const optionsMaxWidth = useMemo(() => {
     return filteredOptions.reduce((max, option) => {
