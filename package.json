@@ -75,8 +75,8 @@
   "homepage": "https://github.com/ukrbublik/react-awesome-query-builder",
   "funding": "https://opencollective.com/react-awesome-query-builder",
   "engines": {
-    "node": ">=12.13",
-    "npm": ">=6"
+    "node": ">=18",
+    "npm": ">=8"
   },
   "dependencies": {
     "@date-io/moment": "^1.3.13",
