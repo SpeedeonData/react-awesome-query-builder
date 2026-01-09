@@ -421,7 +421,7 @@ export function BdaySelector({toggle, addNew, show, currentSelections}) {
         </div>
         <br />
         <p className="small">
-          To ensure the targets are adults, the latest date that can be entered is 18 years prior to today's date.
+          To ensure the targets are adults, the latest date that can be entered is 18 years prior to today&rsquo;s date.
         </p>
         <hr />
         {selectedRanges
