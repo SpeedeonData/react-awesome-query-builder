@@ -41,7 +41,6 @@ export default class ConjsButtons extends PureComponent {
     return (
       <ButtonGroup
         key="group-conjs-buttons"
-        size={renderSize}
         disabled={disabled || readonly}
       >
         {showNot && (readonly ? not : true)
