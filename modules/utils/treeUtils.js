@@ -33,10 +33,11 @@ export const expandTreeSubpath = (path, ...suffix) =>
 export const getItemByPath = (tree, path) => {
   let children = new Immutable.OrderedMap({ [tree.get("id")] : tree });
   let res = tree;
-  path.forEach((id) => {
+  for (const id of path) {
+    if (!children) { res = undefined; break; }
     res = children.get(id);
-    children = res.get("children1");
-  });
+    children = res ? res.get("children1") : undefined;
+  }
   return res;
 };
 

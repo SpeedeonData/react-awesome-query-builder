@@ -73,8 +73,8 @@ const createSortableContainer = (Builder, CanMoveFn = null) =>
               startDragging.itemInfo = clone(dragging.itemInfo);
               startDragging.y = plhEl.offsetTop;
               startDragging.x = plhEl.offsetLeft;
-              startDragging.clientY += (plY - oldPlY);
-              startDragging.clientX += (plX - oldPlX);
+              if (oldPlY != null) startDragging.clientY += (plY - oldPlY);
+              if (oldPlX != null) startDragging.clientX += (plX - oldPlX);
               if (treeElContainer != document.body)
                 startDragging.scrollTop = scrollTop;
 

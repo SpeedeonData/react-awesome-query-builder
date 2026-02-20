@@ -12,11 +12,12 @@ class ConjsButton extends PureComponent {
   };
 
   render() {
-    const {disabled, item} = this.props;
+    const {disabled, item, renderSize} = this.props;
     return (
       <Button
         disabled={disabled}
         type={item.checked ? "primary" : null}
+        size={renderSize}
         onClick={this.onClick}
       >{item.label}</Button>
     );
@@ -41,7 +42,6 @@ export default class ConjsButtons extends PureComponent {
     return (
       <ButtonGroup
         key="group-conjs-buttons"
-        size={renderSize}
         disabled={disabled || readonly}
       >
         {showNot && (readonly ? not : true)
@@ -49,6 +49,7 @@ export default class ConjsButtons extends PureComponent {
             key={"group-not"}
             onClick={this.setNot}
             type={not ? "primary" : null}
+            size={renderSize}
             disabled={readonly}
           >{notLabel}</Button>
         }
@@ -57,6 +58,7 @@ export default class ConjsButtons extends PureComponent {
             key={item.id}
             item={item}
             disabled={disabled || readonly}
+            renderSize={renderSize}
             setConjunction={setConjunction}
           />
         ))}
