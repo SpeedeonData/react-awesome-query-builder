@@ -194,6 +194,17 @@ export default class MultiSelectWidget extends PureComponent {
  * Modal to select range of numbers
  */
 
+// input values are strings, so compare them as numbers when both are numeric
+// ("100" < "18" as strings)
+const isValidRange = (start, end) => {
+  const startNum = Number(start);
+  const endNum = Number(end);
+  if (!isNaN(startNum) && !isNaN(endNum)) {
+    return endNum >= startNum;
+  }
+  return end >= start;
+};
+
 export function YearsSelector({toggle, addNew, show, currentSelections}) {
 
   const [selectedRanges, setSelectedRanges] = useState(currentSelections || []);
@@ -234,7 +245,7 @@ export function YearsSelector({toggle, addNew, show, currentSelections}) {
   };
 
   useEffect(() => {
-    if(startYear && endYear && (endYear >= startYear)) {
+    if(startYear && endYear && isValidRange(startYear, endYear)) {
       setReady(true);
     } else {
       setReady(false);
