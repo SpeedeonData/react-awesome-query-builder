@@ -1,4 +1,8 @@
+import React from "react";
 import moment from "moment";
+import { mount } from "enzyme";
+import { spy } from "sinon";
+import { YearsSelector } from "react-awesome-query-builder/components/widgets/antd/value/MultiSelect";
 import * as configs from "../support/configs";
 import * as inits from "../support/inits";
 import { with_qb_ant } from "../support/utils";
@@ -329,4 +333,67 @@ describe("antdesign widgets interactions", () => {
 
   });
 
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+describe("antdesign multiselect range modal (YearsSelector)", () => {
+  const mountYearsSelector = (currentSelections = []) => {
+    const addNew = spy();
+    const toggle = spy();
+    const wrapper = mount(React.createElement(YearsSelector, {
+      show: true, toggle, addNew, currentSelections
+    }));
+    return { wrapper, addNew, toggle };
+  };
+
+  const enterRange = (wrapper, start, end) => {
+    const inputs = wrapper.find("input[type='text']");
+    inputs.at(0).getDOMNode().value = start;
+    inputs.at(0).simulate("change");
+    inputs.at(1).getDOMNode().value = end;
+    inputs.at(1).simulate("change");
+    wrapper.update();
+  };
+
+  const addButton = (wrapper) => wrapper.find("button.promote");
+
+  const expectReady = (start, end, ready) => {
+    const { wrapper } = mountYearsSelector();
+    enterRange(wrapper, start, end);
+    expect(addButton(wrapper).prop("disabled"), `${start}|${end}`).to.equal(!ready);
+    wrapper.unmount();
+  };
+
+  it("allows ranges whose end has more digits than the start", () => {
+    expectReady("18", "100", true);
+    expectReady("9", "10", true);
+    expectReady("65", "120", true);
+  });
+
+  it("rejects ranges whose end is below the start", () => {
+    expectReady("10", "9", false);
+    expectReady("100", "18", false);
+    expectReady("40", "30", false);
+  });
+
+  it("allows same-width ranges and single-value ranges", () => {
+    expectReady("18", "25", true);
+    expectReady("1990", "2000", true);
+    expectReady("30", "30", true);
+  });
+
+  it("keeps the button disabled until both values are entered", () => {
+    expectReady("18", "", false);
+    expectReady("", "100", false);
+  });
+
+  it("adds the range when both ends are valid", () => {
+    const { wrapper, addNew, toggle } = mountYearsSelector(["21|30"]);
+    enterRange(wrapper, "18", "100");
+    addButton(wrapper).simulate("click");
+    expect(addNew.calledOnceWith(["21|30", "18|100"])).to.equal(true);
+    expect(toggle.calledOnce).to.equal(true);
+    wrapper.unmount();
+  });
 });
